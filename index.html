@@ -17,7 +17,7 @@
             <h1 class="text-2xl md:text-3xl font-black text-green-500 mb-2">
                 <i class="fa-solid fa-podcast ml-2"></i> لوحة توليد أخبار الإذاعة
             </h1>
-            <p class="text-slate-400 text-sm">ضع النص كاملاً (شاملاً سطر الختام)، الصورة والصوت، واحصل على الكود النهائي فوراً!</p>
+            <p class="text-slate-400 text-sm">ضع النص كاملاً (شاملاً سطر الختام)، الصورة والصوت، وسأقوم بمعالجة الرابط وتوليد الكود فوراً!</p>
         </header>
 
         <div class="space-y-6">
@@ -35,7 +35,7 @@
                     <label class="block text-sm font-bold text-slate-300 mb-2">
                         <i class="fa-solid fa-image text-green-500 ml-1"></i> رابط الصورة:
                     </label>
-                    <input type="text" id="imageUrl" placeholder="https://..." class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-green-500 text-sm">
+                    <input type="text" id="imageUrl" placeholder="https://freeimage.host/i/..." class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-green-500 text-sm">
                 </div>
 
                 <!-- خانة رابط الصوت -->
@@ -83,18 +83,25 @@
                 return;
             }
 
+            // المعالجة الذكية لرابط الصورة لتجنب مشاكل عدم ظهورها
+            if (img.includes('freeimage.host/i/')) {
+                let parts = img.split('freeimage.host/i/');
+                if (parts.length > 1) {
+                    let imageId = parts[1].split('/')[0].split('?')[0];
+                    img = 'https://iili.io/' + imageId + '.png';
+                }
+            }
+
             let lines = rawText.split('\n').filter(line => line.trim() !== '');
             let title = lines[0] || "عنوان الخبر";
             let bodyLines = lines.slice(1);
             
-            // استخراج سطر الختام التلقائي (الذي يبدأ بـ يذاع برنامج أو يحتوي عليه)
             let footerNotice = "يذاع برنامج «صباحكو رياضة» عبر أثير إذاعة الشباب والرياضة وهو من تقديم نهى كامل وميكسر نادر راشد وإخراج وفاء عبد التواب.";
             if (bodyLines.length > 0 && (bodyLines[bodyLines.length - 1].includes("يذاع برنامج") || bodyLines[bodyLines.length - 1].includes("يذاع"))) {
                 footerNotice = bodyLines[bodyLines.length - 1];
-                bodyLines.pop(); // فصل سطر الختام عن متن الخبر الأساسي
+                bodyLines.pop();
             }
 
-            // استخراج اسم البرنامج للزر العلوي
             let programName = "إذاعة الشباب والرياضة";
             let progMatch = footerNotice.match(/يذاع برنامج\s*«([^»]+)»/);
             if (!progMatch) progMatch = footerNotice.match(/يذاع برنامج\s*"([^"]+)"/);

@@ -17,7 +17,7 @@
             <h1 class="text-2xl md:text-3xl font-black text-green-500 mb-2">
                 <i class="fa-solid fa-podcast ml-2"></i> لوحة توليد أخبار الإذاعة
             </h1>
-            <p class="text-slate-400 text-sm">ضع النص كاملاً، الصورة والصوت، واحصل على الكود النهائي فوراً!</p>
+            <p class="text-slate-400 text-sm">ضع النص كاملاً، الصورة والصوت، واحصل على الكود النهائي بالصيغة الأصلية فوراً!</p>
         </header>
 
         <div class="space-y-6">
@@ -122,10 +122,18 @@
                 audioId = audio.split('voca.ro/')[1].split('?')[0];
             }
 
-            // التاريخ والوقت باللغة الإنجليزية
+            // ضبط التاريخ والوقت (اليوم وسنة بالأرقام الإنجليزية، والشهر بالعربية)
             const now = new Date();
-            const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'Africa/Cairo' };
-            const dateTimeStr = now.toLocaleString('en-US', options).replace(',', ' -');
+            const monthsAr = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+            
+            let day = now.toLocaleString('en-US', { day: 'numeric', timeZone: 'Africa/Cairo' });
+            let monthNameAr = monthsAr[now.getMonth()];
+            let year = now.toLocaleString('en-US', { year: 'numeric', timeZone: 'Africa/Cairo' });
+            
+            let timeStr = now.toLocaleString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'Africa/Cairo' })
+                             .replace('AM', 'ص').replace('PM', 'م');
+            
+            let dateTimeStr = day + ' ' + monthNameAr + ' ' + year + ' - ' + timeStr;
 
             let safeTitle = title.replace(/"/g, '&quot;');
             let jsSafeTitle = title.replace(/'/g, "\\'").replace(/"/g, '\\"');

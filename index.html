@@ -76,13 +76,11 @@
             let title = lines[0] || "";
             let bodyLines = lines.slice(1);
             
-            // السطر الأخير هو فريق العمل (سطر الختام) حصرياً
             let footer = "";
             if (bodyLines.length > 0) {
                 footer = bodyLines.pop();
             }
 
-            // استخراج اسم البرنامج بدقة (مثل ساعة رياضة) من الختام أو العنوان
             let pName = "";
             let matchGuillemet = footer.match(/«([^»]+)»/) || footer.match(/"([^"]+)"/) || title.match(/«([^»]+)»/) || title.match(/"([^"]+)"/);
             if (matchGuillemet) {
@@ -99,7 +97,6 @@
             }
             if (!pName) pName = "إذاعة الشباب والرياضة";
 
-            // تلوين اسم البرنامج بالأخضر في المتن فقط
             let bodyHtml = bodyLines.map(p => {
                 let replaced = p;
                 if (pName && pName !== "إذاعة الشباب والرياضة") {
@@ -171,7 +168,10 @@
             </div>
             
             <div class="flex justify-between items-center mb-6">
-                <div class="text-[11px] font-bold text-gray-500 select-text" dir="ltr" style="text-align: right;"><i class="fa-solid fa-clock text-green-600 ml-1"></i> ${dateStr}</div>
+                <div class="text-[11px] font-bold text-gray-500 select-text flex items-center gap-1">
+                    <i class="fa-solid fa-clock text-green-600"></i>
+                    <span>${dateStr}</span>
+                </div>
             </div>
 
             <div class="text-gray-800 text-[17px] leading-relaxed font-medium text-justify select-text">

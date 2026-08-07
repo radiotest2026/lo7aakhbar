@@ -17,7 +17,7 @@
             <h1 class="text-2xl md:text-3xl font-black text-green-500 mb-2">
                 <i class="fa-solid fa-podcast ml-2"></i> لوحة توليد أخبار الإذاعة
             </h1>
-            <p class="text-slate-400 text-sm">ضع النص كاملاً (شاملاً سطر الختام)، الصورة والصوت، وسأقوم بمعالجة الرابط وتوليد الكود فوراً!</p>
+            <p class="text-slate-400 text-sm">ضع النص كاملاً (شاملاً سطر الختام)، الصورة والصوت، وسأقوم بمعالجة الرابط والتاريخ بالإنجليزية وتوليد الكود فوراً!</p>
         </header>
 
         <div class="space-y-6">
@@ -83,7 +83,7 @@
                 return;
             }
 
-            // المعالجة الذكية لرابط الصورة لتجنب مشاكل عدم ظهورها
+            // المعالجة الذكية لرابط الصورة
             if (img.includes('freeimage.host/i/')) {
                 let parts = img.split('freeimage.host/i/');
                 if (parts.length > 1) {
@@ -122,9 +122,10 @@
                 audioId = audio.split('voca.ro/')[1].split('?')[0];
             }
 
+            // توليد التاريخ والوقت باللغة الإنجليزية
             const now = new Date();
             const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'Africa/Cairo' };
-            const dateTimeStr = now.toLocaleDateString('ar-EG', options).replace('،', ' -');
+            const dateTimeStr = now.toLocaleString('en-US', options).replace(',', ' -');
 
             let safeTitle = title.replace(/"/g, '&quot;');
             let jsSafeTitle = title.replace(/'/g, "\\'").replace(/"/g, '\\"');
@@ -215,7 +216,7 @@
 '            \n' +
 '            <!-- أزرار المشاركة -->\n' +
 '            <div class="flex justify-between items-center mb-6">\n' +
-'                <div class="text-[11px] font-bold text-gray-500 select-text"><i class="fa-solid fa-clock text-green-600 ml-1"></i> ' + dateTimeStr + '</div>\n' +
+'                <div class="text-[11px] font-bold text-gray-500 select-text" dir="ltr" style="text-align: right;"><i class="fa-solid fa-clock text-green-600 ml-1"></i> ' + dateTimeStr + '</div>\n' +
 '                <div class="flex gap-1.5 items-center">\n' +
 '                    <a href="https://radioshababwrayadh108.vercel.app/" title="الرئيسية" class="share-btn bg-blue-950"><i class="fa-solid fa-house"></i></a>\n' +
 '                    <button onclick="copyCurrentLink()" title="نسخ الرابط" class="share-btn bg-amber-600"><i class="fa-solid fa-copy"></i></button>\n' +

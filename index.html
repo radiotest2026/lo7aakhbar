@@ -120,6 +120,7 @@
             let dateStr = day + " " + months[now.getMonth()] + " " + year + " - " + time;
 
             let safeTitle = title.replace(/"/g, '&quot;');
+            let jsSafeTitle = title.replace(/'/g, "\\'").replace(/"/g, '\\"');
             let safeFooter = footer.replace(/"/g, '&quot;');
 
             let finalHtml = `<!DOCTYPE html>
@@ -139,6 +140,7 @@
         .ring-pulse-container::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; border: 1.5px solid #16a34a; animation: ring-pulse 3s ease-in-out infinite; }
         body { font-family: 'Cairo', sans-serif; background-color: #f3f4f6; margin: 0; padding: 0; }
         .mobile-news-container { width: 100%; max-width: 480px; margin: 0 auto; background-color: #ffffff; min-height: 100vh; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .share-btn { width: 31px; height: 31px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; font-size: 15px; border: none; cursor: pointer; transition: transform 0.2s; }
     </style>
 </head>
 <body>
@@ -172,6 +174,13 @@
                     <i class="fa-solid fa-clock text-green-600"></i>
                     <span>${dateStr}</span>
                 </div>
+                <div class="flex gap-1.5 items-center">
+                    <a href="https://radioshababwrayadh108.vercel.app/" title="الرئيسية" class="share-btn bg-blue-950"><i class="fa-solid fa-house"></i></a>
+                    <button onclick="copyCurrentLink()" title="نسخ الرابط" class="share-btn bg-amber-600"><i class="fa-solid fa-copy"></i></button>
+                    <button onclick="shareLink(\'wa\')" class="share-btn bg-green-500"><i class="fa-brands fa-whatsapp"></i></button>
+                    <button onclick="shareLink(\'fb\')" class="share-btn bg-blue-600"><i class="fa-brands fa-facebook-f"></i></button>
+                    <button onclick="shareLink(\'tw\')" class="share-btn bg-black"><i class="fa-brands fa-x-twitter"></i></button>
+                </div>
             </div>
 
             <div class="text-gray-800 text-[17px] leading-relaxed font-medium text-justify select-text">
@@ -201,6 +210,32 @@ ${bodyHtml}
             جميع الحقوق محفوظة © لإذاعة الشباب والرياضة 108 إف إم 2026
         </footer>
     </div>
+
+    <div id="copyToast" style="display: none; position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #1e293b; color: #fbbf24; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: bold; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+        تم نسخ رابط الخبر بنجاح!
+    </div>
+
+    <script>
+        function copyCurrentLink() {
+            const dummy = document.createElement('input');
+            document.body.appendChild(dummy);
+            dummy.value = window.location.href;
+            dummy.select();
+            document.execCommand('copy');
+            document.body.removeChild(dummy);
+            const toast = document.getElementById('copyToast');
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 2000);
+        }
+
+        function shareLink(type) {
+            const shareUrl = window.location.href; 
+            const newsTitle = "${jsSafeTitle}";
+            if(type === 'wa') window.open('https://wa.me/?text=' + encodeURIComponent(newsTitle + '\\n\\n' + shareUrl), '_blank');
+            else if(type === 'fb') window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(shareUrl), '_blank');
+            else if(type === 'tw') window.open('https://twitter.com/intent/tweet?url=' + encodeURIComponent(shareUrl) + '&text=' + encodeURIComponent(newsTitle), '_blank');
+        }
+    <\/script>
 </body>
 </html>`;
             document.getElementById('outputCode').value = finalHtml;
@@ -214,7 +249,9 @@ ${bodyHtml}
             
             let toast = document.getElementById('toast');
             toast.classList.remove('hidden');
-            setTimeout(() => { toast.classList.add('hidden'); }, 2000);
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 2000);
         }
     </script>
 </body>

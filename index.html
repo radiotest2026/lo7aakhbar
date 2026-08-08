@@ -122,12 +122,21 @@
             let safeTitle = title.replace(/"/g, '&quot;');
             let jsSafeTitle = title.replace(/'/g, "\\'").replace(/"/g, '\\"');
             let safeFooter = footer.replace(/"/g, '&quot;');
+            let descText = (bodyLines[0] ? bodyLines[0] : title).replace(/"/g, '&quot;');
 
             let finalHtml = `<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- وسوم المعاينة لفيسبوك وباقي المنصات (Open Graph) -->
+    <meta property="og:title" content="${safeTitle}">
+    <meta property="og:description" content="${descText}">
+    <meta property="og:image" content="${img}">
+    <meta property="og:url" content="https://radioshababwrayadh108.vercel.app/">
+    <meta property="og:type" content="article">
+
     <script src="https://cdn.tailwindcss.com"><\/script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -177,9 +186,9 @@
                 <div class="flex gap-1.5 items-center">
                     <a href="https://radioshababwrayadh108.vercel.app/" title="الرئيسية" class="share-btn bg-blue-950"><i class="fa-solid fa-house"></i></a>
                     <button onclick="copyCurrentLink()" title="نسخ الرابط" class="share-btn bg-amber-600"><i class="fa-solid fa-copy"></i></button>
-                    <button onclick="shareLink(\'wa\')" class="share-btn bg-green-500"><i class="fa-brands fa-whatsapp"></i></button>
-                    <button onclick="shareLink(\'fb\')" class="share-btn bg-blue-600"><i class="fa-brands fa-facebook-f"></i></button>
-                    <button onclick="shareLink(\'tw\')" class="share-btn bg-black"><i class="fa-brands fa-x-twitter"></i></button>
+                    <button onclick="shareLink('wa')" class="share-btn bg-green-500"><i class="fa-brands fa-whatsapp"></i></button>
+                    <button onclick="shareLink('fb')" class="share-btn bg-blue-600"><i class="fa-brands fa-facebook-f"></i></button>
+                    <button onclick="shareLink('tw')" class="share-btn bg-black"><i class="fa-brands fa-x-twitter"></i></button>
                 </div>
             </div>
 
